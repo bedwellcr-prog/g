@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    html { overflow-x: hidden; }
+
     :root {
       --black: #000000;
       --dark: #33322F;
@@ -96,6 +98,15 @@
       .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
       .fixed.left-0 { display: none !important; }
     }
+  
+      /* Nav overflow clamp */
+      nav, .site-nav, .nav-wrap {
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+      }
+      * { box-sizing: border-box; }
+    
   </style>
 </head>
 <body>
