@@ -404,26 +404,49 @@
 
     /* ── Mobile ───────────────────────────────────────── */
     @media (max-width: 768px) {
+
+      /* Base */
       body {
         font-size: 1rem;
       }
 
-      /* Nav */
+      /* ── Nav ── */
       .site-nav {
-        padding: 14px 20px !important;
+        padding: 12px 20px !important;
       }
 
       .nav-left {
         display: none !important;
       }
 
-      .nav-right .account-link {
-        display: none;
+      .nav-right a:first-child {
+        display: none !important;
       }
 
-      /* Hero */
+      .nav-right {
+        gap: 8px !important;
+      }
+
+      /* Hide floating tab */
+      .fixed.left-0 {
+        display: none !important;
+      }
+
+      /* ── Hero ── */
       section[style*="height: 440px"] {
-        height: 280px !important;
+        height: 300px !important;
+      }
+
+      div[style*="bottom: 40px; right: 48px"] {
+        bottom: 20px !important;
+        right: 0 !important;
+        left: 0 !important;
+        text-align: center !important;
+        align-items: center !important;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 0 24px !important;
+        max-width: 100% !important;
       }
 
       .script {
@@ -431,191 +454,168 @@
         white-space: normal !important;
       }
 
-      div[style*="bottom: 40px; right: 48px"] {
-        bottom: 20px !important;
-        right: 20px !important;
-        left: 20px !important;
-        max-width: 100% !important;
-      }
-
-      /* Products section padding */
+      /* ── Products Section ── */
       section[style*="padding: 48px 40px"] {
-        padding: 32px 16px !important;
+        padding: 28px 16px !important;
       }
 
-      /* Products outer: stack feature card below */
       .products-outer {
         grid-template-columns: 1fr !important;
+        gap: 16px !important;
       }
 
-      /* Products sub: stack to single column */
       .products-sub {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 14px !important;
       }
 
-      /* Problem section */
+      /* Shrink product image boxes */
+      .products-sub div[style*="height: 320px"] {
+        height: 200px !important;
+      }
+
+      .products-sub img[style*="height: 290px"] {
+        height: 170px !important;
+      }
+
+      /* Product tags — smaller on mobile */
+      .products-sub span[style*="border-radius: 999px"] {
+        font-size: 9px !important;
+        padding: 2px 7px !important;
+      }
+
+      /* Testimonial widget */
+      div[style*="padding: 40px 32px"] {
+        padding: 28px 16px !important;
+        min-height: 200px !important;
+      }
+
+      .testi-quote {
+        font-size: 16px !important;
+      }
+
+      /* Feature card: show image on top when stacked */
+      .products-outer > div:last-child {
+        flex-direction: column-reverse !important;
+      }
+
+      /* Something New card — center content */
+      .products-outer > div:last-child div[style*="padding: 24px"],
+      .products-outer > div:last-child div[style*="padding: 32px"] {
+        align-items: center !important;
+        text-align: center !important;
+        padding: 28px 20px !important;
+      }
+
+      .products-outer > div:last-child div[style*="gap: 12px"] {
+        align-items: center !important;
+      }
+
+      .products-outer > div:last-child span[style*="display: inline-flex"] {
+        align-self: center !important;
+      }
+
+      /* ── Problem Section ── */
       .problem-grid {
         grid-template-columns: 1fr !important;
         min-height: auto !important;
       }
 
-      .problem-grid>div:first-child {
-        height: 260px;
+      .problem-grid > div:first-child {
+        height: 240px !important;
       }
 
-      .problem-grid>div:last-child {
-        padding: 36px 24px !important;
+      .problem-grid > div:last-child {
+        padding: 32px 20px !important;
+        align-items: center !important;
       }
 
-      /* Solution section */
+      .problem-grid > div:last-child h2,
+      .problem-grid > div:last-child p,
+      .problem-grid > div:last-child span {
+        text-align: center !important;
+      }
+
+      .problem-grid > div:last-child span[style*="align-self: flex-start"] {
+        align-self: center !important;
+      }
+
+      /* ── Solution Section ── */
       .solution-grid {
         grid-template-columns: 1fr !important;
         min-height: auto !important;
       }
 
-      .solution-grid>div:first-child {
-        padding: 36px 24px !important;
+      .solution-grid > div:first-child {
+        padding: 32px 20px !important;
+        order: 2;
       }
 
-      .solution-grid>div:last-child {
-        height: 260px;
+      .solution-grid > div:last-child {
+        height: 240px !important;
+        order: 1;
       }
 
-      /* Pricing */
+      /* ── Microplastic Chart ── */
+      section[style*="padding: 0 40px 60px"] {
+        padding: 0 16px 36px !important;
+      }
+
+      div[style*="width: 160px; flex-shrink: 0"] {
+        width: 76px !important;
+        font-size: 9px !important;
+      }
+
+      /* ── Pricing ── */
       section[style*="padding: 80px 40px"] {
-        padding: 48px 16px !important;
+        padding: 40px 16px !important;
       }
 
       .pricing-grid {
         grid-template-columns: 1fr !important;
-        max-width: 100% !important;
+        max-width: 400px !important;
+        margin: 0 auto !important;
       }
 
-      /* Reviews */
+      section[style*="padding: 80px 40px"] h2,
+      section[style*="padding: 80px 40px"] p {
+        text-align: center !important;
+      }
+
+      /* ── Reviews ── */
       section[style*="padding: 0 40px 32px"] {
-        padding: 0 16px 32px !important;
+        padding: 0 16px 28px !important;
       }
 
       .reviews-grid {
         grid-template-columns: 1fr !important;
       }
 
-      /* Microplastic chart */
-      section[style*="padding: 0 40px 60px"] {
-        padding: 0 16px 40px !important;
-      }
-
-      div[style*="width: 160px; flex-shrink: 0; text-align: right"] {
-        width: 90px !important;
-      }
-
-      /* Email section */
-      section[style*="padding: 48px 40px"] {
-        padding: 32px 16px !important;
-      }
-
+      /* ── Email / Newsletter ── */
       .email-grid {
         grid-template-columns: 1fr !important;
-        gap: 32px !important;
+        gap: 28px !important;
+      }
+
+      .email-grid > div:first-child {
+        text-align: center !important;
       }
 
       div[style*="grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px"] {
         grid-template-columns: 1fr 1fr !important;
       }
 
-      /* Footer */
+      /* ── Footer ── */
       footer {
-        padding: 32px 16px 16px !important;
+        padding: 28px 16px 16px !important;
       }
 
       .footer-grid {
         grid-template-columns: 1fr 1fr !important;
-        gap: 24px !important;
+        gap: 20px !important;
       }
 
-      /* Spacers */
-      div[style*="height: 140px"] {
-        height: 60px !important;
-      }
-
-      /* Floating tab */
-      .fixed.left-0 {
-        display: none !important;
-      }
-
-      /* Center all section headings and labels */
-      h2,
-      h1,
-      h3 {
-        text-align: center !important;
-      }
-
-      section h2[style] {
-        text-align: center !important;
-      }
-
-      .products-outer>div:first-child>div:first-child h2 {
-        text-align: left !important;
-      }
-
-      /* Products section subtitle */
-      section[style*="padding: 48px 40px"]>h2 {
-        text-align: center !important;
-      }
-
-      /* Problem section text — keep left on desktop but center on mobile */
-      .problem-grid>div:last-child h2,
-      .problem-grid>div:last-child p,
-      .problem-grid>div:last-child span {
-        text-align: center !important;
-      }
-
-      .problem-grid>div:last-child {
-        align-items: center !important;
-      }
-
-      .problem-grid>div:last-child span[style*="align-self: flex-start"] {
-        align-self: center !important;
-      }
-
-      /* Pricing section headings */
-      section[style*="padding: 80px 40px"] h2,
-      section[style*="padding: 80px 40px"] p,
-      section[style*="padding: 80px 40px"] span {
-        text-align: center !important;
-      }
-
-      /* Something New feature card — center all content */
-      .products-outer>div:last-child div[style*="padding: 24px"] {
-        align-items: center !important;
-        text-align: center !important;
-      }
-
-      .products-outer>div:last-child div[style*="padding: 24px"]>div,
-      .products-outer>div:last-child div[style*="padding: 24px"] h2,
-      .products-outer>div:last-child div[style*="padding: 24px"] p {
-        text-align: center !important;
-      }
-
-      .products-outer>div:last-child div[style*="gap: 12px"] {
-        align-items: center !important;
-      }
-
-      .products-outer>div:last-child span[style*="display: inline-flex"] {
-        align-self: center !important;
-      }
-
-      /* Email section */
-      .email-grid>div:first-child {
-        text-align: center !important;
-      }
-
-      .email-grid>div:first-child h2 {
-        text-align: center !important;
-      }
-
-      /* Footer */
-      .footer-grid>div {
+      .footer-grid > div {
         text-align: center !important;
       }
 
@@ -623,18 +623,18 @@
         text-align: center !important;
       }
 
-      /* Testimonial widget inside products */
-      div[style*="padding: 40px 32px"] {
-        padding: 32px 20px !important;
+      /* ── Spacers ── */
+      div[style*="height: 140px"] {
+        height: 48px !important;
       }
 
-      .testi-quote {
-        font-size: 18px !important;
+      /* ── Global heading centering ── */
+      h1, h2, h3 {
+        text-align: center !important;
       }
 
-      /* Chart bars label width */
-      div[style*="width: 160px; flex-shrink: 0"] {
-        width: 80px !important;
+      section h2[style] {
+        text-align: center !important;
       }
     }
   </style>
