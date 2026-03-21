@@ -98,6 +98,90 @@
       color: #ffffff;
       border-color: var(--dark);
     }
+
+    /* Product image hover zoom */
+    .products-sub a:hover img {
+      transform: scale(1.04);
+    }
+
+    /* ── Cart Popup ── */
+    #cart-popup {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 340px;
+      height: 100vh;
+      background: #fff;
+      border-left: 1px solid var(--gray-mid);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: -8px 0 40px rgba(0,0,0,0.08);
+    }
+
+    #cart-popup.open {
+      transform: translateX(0);
+    }
+
+    #cart-popup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--gray-mid);
+    }
+
+    #cart-popup-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: var(--silver);
+      font-size: 18px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    #cart-popup-close:hover { color: var(--dark); }
+
+    #cart-popup-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 28px 24px;
+      flex: 1;
+      align-content: flex-start;
+    }
+
+    #cart-popup-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: var(--gray-bg);
+      flex-shrink: 0;
+    }
+
+    #cart-popup-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--gray-mid);
+    }
+
+    /* ── Confetti canvas ── */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    @media (max-width: 768px) {
+      #cart-popup { width: 100%; border-left: none; }
+    }
   </style>
 </head>
 
@@ -167,11 +251,13 @@
 
           <!-- Product 1: Toothpaste -->
           <div>
-            <div
-              style="background: var(--gray-bg); height: 320px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
-              <img src="005ba1ac3c776b30989afda2c2811a78.jpg" alt="Organic Toothpaste"
-                style="height: 290px; object-fit: contain;">
-            </div>
+            <a href="toothpaste.html" style="display: block; text-decoration: none;">
+              <div
+                style="background: var(--gray-bg); height: 320px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; overflow: hidden;">
+                <img src="005ba1ac3c776b30989afda2c2811a78.jpg" alt="Organic Toothpaste"
+                  style="height: 290px; object-fit: contain; transition: transform 0.4s ease;">
+              </div>
+            </a>
             <div style="display: flex; justify-content: center; align-items: baseline; gap: 12px; margin-bottom: 4px;">
               <span
                 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 500;">Toothpaste</span>
@@ -189,17 +275,19 @@
                 Fluoride</span>
             </div>
             <div style="display: flex; justify-content: center;">
-              <a href="toothpaste.html" class="btn-shop">Shop Now &rarr;</a>
+              <button class="btn-shop" onclick="addToCart('Cetemps Toothpaste', '$19', '005ba1ac3c776b30989afda2c2811a78.jpg')">Add to Cart</button>
             </div>
           </div>
 
           <!-- Product 2: Toothbrush -->
           <div>
-            <div
-              style="background: var(--gray-bg); height: 320px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
-              <img src="CoatedLemon_ProductPhoto_Comb-1172.jpg.webp" alt="Boar Hair Toothbrush"
-                style="height: 290px; object-fit: contain;">
-            </div>
+            <a href="toothbrush.html" style="display: block; text-decoration: none;">
+              <div
+                style="background: var(--gray-bg); height: 320px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; overflow: hidden;">
+                <img src="CoatedLemon_ProductPhoto_Comb-1172.jpg.webp" alt="Boar Hair Toothbrush"
+                  style="height: 290px; object-fit: contain; transition: transform 0.4s ease;">
+              </div>
+            </a>
             <div style="display: flex; justify-content: center; align-items: baseline; gap: 12px; margin-bottom: 4px;">
               <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 500;">Boar
                 Hair Toothbrush</span>
@@ -217,7 +305,7 @@
                 Sourced</span>
             </div>
             <div style="display: flex; justify-content: center;">
-              <a href="toothbrush.html" class="btn-shop">Shop Now &rarr;</a>
+              <button class="btn-shop" onclick="addToCart('Boar Hair Toothbrush', '$26', 'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp')">Add to Cart</button>
             </div>
           </div>
 
@@ -792,7 +880,7 @@
       <div
         style="background: #fff; padding: 60px 56px; display: flex; flex-direction: column; justify-content: center;">
         <span
-          style="display: inline-flex; align-items: center; align-self: flex-start; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg); margin-bottom: 16px; font-weight: 400;">Our
+          style="display: inline-flex; align-items: center; align-self: center; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg); margin-bottom: 16px; font-weight: 400;">Our
           Solution</span>
         <h2
           style="font-size: 52px; font-weight: 300; text-transform: uppercase; line-height: 0.92; margin-bottom: 18px; letter-spacing: 0.06em; font-family: 'Cormorant Garamond', serif;">
@@ -1213,6 +1301,108 @@
       &copy; 2026 Cetemps. All rights reserved.
     </div>
   </footer>
+
+  <!-- ── Cart Popup ── -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div id="cart-popup">
+    <div id="cart-popup-header">
+      <span style="font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; color: var(--dark);">Added to Cart</span>
+      <button id="cart-popup-close" onclick="closeCart()" aria-label="Close">&#10005;</button>
+    </div>
+    <div id="cart-popup-item">
+      <img id="cart-popup-img" src="" alt="">
+      <div>
+        <p id="cart-popup-name" style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; color: var(--dark); margin-bottom: 6px;"></p>
+        <p id="cart-popup-price" style="font-size: 14px; color: var(--silver); letter-spacing: 0.06em;"></p>
+        <p style="font-size: 10px; color: var(--silver-light); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 10px;">Qty: 1</p>
+      </div>
+    </div>
+    <div id="cart-popup-footer">
+      <a href="shop.html" style="display: block; text-align: center; background: var(--dark); color: #fff; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; font-weight: 500;">View Cart &rarr;</a>
+      <button onclick="closeCart()" style="display: block; width: 100%; text-align: center; background: none; border: 1px solid var(--gray-mid); color: var(--silver); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 13px 24px; cursor: pointer; font-family: 'Montserrat', sans-serif;">Continue Shopping</button>
+    </div>
+  </div>
+
+  <script>
+    // ── Cart popup ──
+    let cartTimer = null;
+
+    function addToCart(name, price, img) {
+      document.getElementById('cart-popup-name').textContent = name;
+      document.getElementById('cart-popup-price').textContent = price;
+      document.getElementById('cart-popup-img').src = img;
+      document.getElementById('cart-popup-img').alt = name;
+
+      const popup = document.getElementById('cart-popup');
+      popup.classList.add('open');
+
+      launchConfetti();
+
+      if (cartTimer) clearTimeout(cartTimer);
+      cartTimer = setTimeout(closeCart, 3000);
+    }
+
+    function closeCart() {
+      document.getElementById('cart-popup').classList.remove('open');
+      if (cartTimer) { clearTimeout(cartTimer); cartTimer = null; }
+    }
+
+    // ── Black confetti ──
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ['#000000', '#33322F', '#9C9B93', '#c8c7bf', '#ffffff'];
+      const particles = Array.from({ length: 120 }, () => ({
+        x: Math.random() * canvas.width,
+        y: -10 - Math.random() * 200,
+        w: 6 + Math.random() * 8,
+        h: 3 + Math.random() * 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 3,
+        vy: 2 + Math.random() * 4,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.18,
+        opacity: 1,
+      }));
+
+      const start = performance.now();
+      const duration = 3000;
+
+      function draw(now) {
+        const elapsed = now - start;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const fade = Math.max(0, 1 - Math.max(0, elapsed - 2000) / 1000);
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.angle += p.spin;
+          p.vy += 0.06; // gravity
+
+          ctx.save();
+          ctx.globalAlpha = fade;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+
+        if (elapsed < duration) {
+          requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+  </script>
 
 </body>
 
