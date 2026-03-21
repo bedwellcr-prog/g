@@ -350,9 +350,108 @@
     </div>
   </footer>
 
+  <!-- Cart Popup -->
+  <canvas id="confetti-canvas"></canvas>
+  <div id="cart-popup">
+    <div id="cart-popup-header">
+      <span style="font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; color: var(--dark);">Added to Cart</span>
+      <button id="cart-popup-close" onclick="closeCart()" aria-label="Close">&#10005;</button>
+    </div>
+    <div id="cart-popup-item">
+      <img id="cart-popup-img" src="" alt="">
+      <div style="flex: 1; min-width: 0;">
+        <p id="cart-popup-name" style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; color: var(--dark); margin-bottom: 6px;"></p>
+        <p id="cart-popup-price" style="font-size: 14px; color: var(--silver); letter-spacing: 0.06em;"></p>
+        <p id="cart-popup-qty" style="font-size: 10px; color: var(--silver-light); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 10px;"></p>
+      </div>
+      <button onclick="removeFromPopup()" title="Remove" style="background: none; border: none; cursor: pointer; color: var(--silver-light); font-size: 16px; padding: 4px; align-self: flex-start; transition: color 0.2s; flex-shrink: 0;">&#10005;</button>
+    </div>
+    <div id="cart-popup-footer">
+      <a href="cart.html" style="display: block; text-align: center; background: var(--dark); color: #fff; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; font-weight: 500;">View Cart &rarr;</a>
+      <button onclick="closeCart()" style="display: block; width: 100%; text-align: center; background: none; border: 1px solid var(--gray-mid); color: var(--silver); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 13px 24px; cursor: pointer; font-family: 'Montserrat', sans-serif;">Continue Shopping</button>
+    </div>
+  </div>
+
   <script>
     let qty = 1;
     let currentPlan = 'sub';
+    let currentPopupId = null;
+    let cartTimer = null;
+
+    function getCart() { return JSON.parse(localStorage.getItem('cetemps_cart') || '[]'); }
+    function saveCart(items) { localStorage.setItem('cetemps_cart', JSON.stringify(items)); updateNavCount(); }
+    function getCartCount() { return getCart().reduce((s, i) => s + i.qty, 0); }
+    function updateNavCount() {
+      const el = document.getElementById('cart-nav-link');
+      if (el) el.textContent = 'Cart (' + getCartCount() + ')';
+    }
+
+    function handleCTA() {
+      if (currentPlan === 'sub') {
+        doAddToCart('toothbrush-sub', 'Toothbrush · Subscribe & Save', 23.40, 'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp');
+      } else {
+        doAddToCart('toothbrush', 'Boar Hair Toothbrush', 26, 'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp');
+      }
+    }
+
+    function doAddToCart(id, name, price, img) {
+      const cart = getCart();
+      const existing = cart.find(i => i.id === id);
+      const addQty = qty;
+      if (existing) { existing.qty += addQty; } else { cart.push({ id, name, price, img, qty: addQty }); }
+      saveCart(cart);
+      currentPopupId = id;
+
+      document.getElementById('cart-popup-name').textContent = name;
+      document.getElementById('cart-popup-price').textContent = '$' + price.toFixed(2);
+      document.getElementById('cart-popup-img').src = img;
+      document.getElementById('cart-popup-img').alt = name;
+      document.getElementById('cart-popup-qty').textContent = 'Qty: ' + addQty;
+      document.getElementById('cart-popup').classList.add('open');
+
+      launchConfetti();
+      if (cartTimer) clearTimeout(cartTimer);
+      cartTimer = setTimeout(closeCart, 3000);
+    }
+
+    function removeFromPopup() {
+      if (!currentPopupId) return;
+      saveCart(getCart().filter(i => i.id !== currentPopupId));
+      closeCart();
+    }
+
+    function closeCart() {
+      document.getElementById('cart-popup').classList.remove('open');
+      if (cartTimer) { clearTimeout(cartTimer); cartTimer = null; }
+    }
+
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      const colors = ['#000000','#33322F','#9C9B93','#c8c7bf','#ffffff'];
+      const particles = Array.from({ length: 120 }, () => ({
+        x: Math.random() * canvas.width, y: -10 - Math.random() * 200,
+        w: 6 + Math.random() * 8, h: 3 + Math.random() * 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 3, vy: 2 + Math.random() * 4,
+        angle: Math.random() * Math.PI * 2, spin: (Math.random() - 0.5) * 0.18,
+      }));
+      const start = performance.now(), duration = 3000;
+      function draw(now) {
+        const elapsed = now - start;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const fade = Math.max(0, 1 - Math.max(0, elapsed - 2000) / 1000);
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.angle += p.spin; p.vy += 0.06;
+          ctx.save(); ctx.globalAlpha = fade; ctx.translate(p.x, p.y); ctx.rotate(p.angle);
+          ctx.fillStyle = p.color; ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+        });
+        if (elapsed < duration) requestAnimationFrame(draw);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      requestAnimationFrame(draw);
+    }
 
     function changeQty(delta) {
       qty = Math.max(1, qty + delta);
@@ -364,11 +463,7 @@
       document.querySelectorAll('.plan-option').forEach(el => el.classList.remove('selected'));
       document.getElementById('plan-' + plan).classList.add('selected');
       const btn = document.getElementById('cta-btn');
-      if (plan === 'sub') {
-        btn.textContent = 'Subscribe & Save — $23.40 →';
-      } else {
-        btn.textContent = 'Add to Cart — $26.00 →';
-      }
+      btn.textContent = plan === 'sub' ? 'Subscribe & Save — $23.40 →' : 'Add to Cart — $26.00 →';
     }
 
     function toggleAccordion(header) {
@@ -376,12 +471,11 @@
       const icon = header.querySelector('.icon');
       const isOpen = body.classList.contains('open');
       document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
-      document.querySelectorAll('.accordion-header .icon').forEach(i => { i.textContent = '+'; i.style.transform = ''; });
-      if (!isOpen) {
-        body.classList.add('open');
-        icon.textContent = '−';
-      }
+      document.querySelectorAll('.accordion-header .icon').forEach(i => { i.textContent = '+'; });
+      if (!isOpen) { body.classList.add('open'); icon.textContent = '−'; }
     }
+
+    window.addEventListener('DOMContentLoaded', updateNavCount);
   </script>
 </body>
 </html>
