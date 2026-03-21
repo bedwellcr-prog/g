@@ -213,7 +213,7 @@
     <div class="nav-right" style="display: flex; gap: 10px;">
       <a href="#"
         style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg); transition: background 0.2s;">Account</a>
-      <a href="#"
+      <a id="cart-nav-link" href="cart.html"
         style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg); transition: background 0.2s;">Cart
         (0)</a>
     </div>
@@ -275,7 +275,7 @@
                 Fluoride</span>
             </div>
             <div style="display: flex; justify-content: center;">
-              <button class="btn-shop" onclick="addToCart('Cetemps Toothpaste', '$19', '005ba1ac3c776b30989afda2c2811a78.jpg')">Add to Cart</button>
+              <button class="btn-shop" onclick="addToCart('toothpaste','Cetemps Toothpaste',19,'005ba1ac3c776b30989afda2c2811a78.jpg')">Add to Cart</button>
             </div>
           </div>
 
@@ -305,7 +305,7 @@
                 Sourced</span>
             </div>
             <div style="display: flex; justify-content: center;">
-              <button class="btn-shop" onclick="addToCart('Boar Hair Toothbrush', '$26', 'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp')">Add to Cart</button>
+              <button class="btn-shop" onclick="addToCart('toothbrush','Boar Hair Toothbrush',26,'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp')">Add to Cart</button>
             </div>
           </div>
 
@@ -1319,26 +1319,40 @@
       </div>
     </div>
     <div id="cart-popup-footer">
-      <a href="shop.html" style="display: block; text-align: center; background: var(--dark); color: #fff; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; font-weight: 500;">View Cart &rarr;</a>
+      <a href="cart.html" style="display: block; text-align: center; background: var(--dark); color: #fff; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 14px 24px; text-decoration: none; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; font-weight: 500;">View Cart &rarr;</a>
       <button onclick="closeCart()" style="display: block; width: 100%; text-align: center; background: none; border: 1px solid var(--gray-mid); color: var(--silver); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 13px 24px; cursor: pointer; font-family: 'Montserrat', sans-serif;">Continue Shopping</button>
     </div>
   </div>
 
   <script>
+    // ── localStorage cart ──
+    function getCart() { return JSON.parse(localStorage.getItem('cetemps_cart') || '[]'); }
+    function saveCart(items) { localStorage.setItem('cetemps_cart', JSON.stringify(items)); updateNavCount(); }
+    function getCartCount() { return getCart().reduce((s, i) => s + i.qty, 0); }
+    function updateNavCount() {
+      const el = document.getElementById('cart-nav-link');
+      if (el) el.textContent = 'Cart (' + getCartCount() + ')';
+    }
+    window.addEventListener('DOMContentLoaded', updateNavCount);
+
     // ── Cart popup ──
     let cartTimer = null;
 
-    function addToCart(name, price, img) {
+    function addToCart(id, name, price, img) {
+      // Persist to localStorage
+      const cart = getCart();
+      const existing = cart.find(i => i.id === id);
+      if (existing) { existing.qty++; } else { cart.push({ id, name, price, img, qty: 1 }); }
+      saveCart(cart);
+
+      // Show popup
       document.getElementById('cart-popup-name').textContent = name;
-      document.getElementById('cart-popup-price').textContent = price;
+      document.getElementById('cart-popup-price').textContent = '$' + price;
       document.getElementById('cart-popup-img').src = img;
       document.getElementById('cart-popup-img').alt = name;
-
-      const popup = document.getElementById('cart-popup');
-      popup.classList.add('open');
+      document.getElementById('cart-popup').classList.add('open');
 
       launchConfetti();
-
       if (cartTimer) clearTimeout(cartTimer);
       cartTimer = setTimeout(closeCart, 3000);
     }
