@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boar Hair Toothbrush — Cetemps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --dark: #33322F;
+      --silver: #9C9B93;
+      --silver-light: #c8c7bf;
+      --gray-bg: #f7f7f6;
+      --gray-mid: #ebebea;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      background: var(--white);
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .btn-shop {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid var(--dark); font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 14px 36px; text-decoration: none; color: var(--dark);
+      font-weight: 500; position: relative; overflow: hidden; z-index: 0;
+      transition: color 0.45s ease, border-color 0.45s ease; cursor: pointer;
+      background: none; width: 100%; justify-content: center;
+    }
+    .btn-shop::before {
+      content: ''; position: absolute; inset: 0; z-index: -1;
+      background: var(--dark); transform: translateX(-100%);
+      transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+    }
+    .btn-shop:hover::before { transform: translateX(0); }
+    .btn-shop:hover { color: #fff; border-color: var(--dark); }
+
+    /* Accordion */
+    .accordion-item { border-top: 1px solid var(--gray-mid); }
+    .accordion-item:last-child { border-bottom: 1px solid var(--gray-mid); }
+    .accordion-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 0; cursor: pointer; font-size: 10px; letter-spacing: 0.18em;
+      text-transform: uppercase; font-weight: 500;
+    }
+    .accordion-header .icon { font-size: 18px; color: var(--silver); line-height: 1; transition: transform 0.2s; }
+    .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .accordion-body.open { max-height: 200px; }
+    .accordion-body p { padding: 0 0 16px; font-size: 11px; color: var(--silver); line-height: 1.7; letter-spacing: 0.03em; }
+
+    /* Plan selector */
+    .plan-option {
+      border: 1px solid var(--gray-mid); padding: 16px 20px; cursor: pointer;
+      transition: border-color 0.2s; position: relative;
+    }
+    .plan-option.selected { border-color: var(--dark); }
+    .plan-option .radio {
+      width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--gray-mid);
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .plan-option.selected .radio { border-color: var(--dark); }
+    .plan-option.selected .radio::after {
+      content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--dark);
+    }
+
+    /* Qty stepper */
+    .qty-btn {
+      width: 40px; height: 40px; border: 1px solid var(--gray-mid); background: none;
+      font-size: 18px; cursor: pointer; color: var(--dark); display: flex; align-items: center; justify-content: center;
+    }
+    .qty-btn:hover { background: var(--gray-bg); }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .product-layout { flex-direction: column !important; }
+      .product-image-col { position: static !important; width: 100% !important; height: 420px !important; }
+      .product-detail-col { width: 100% !important; padding: 32px 20px !important; }
+      .site-nav { padding: 12px 16px !important; }
+      .nav-left, .nav-right { gap: 6px !important; }
+      .nav-left a, .nav-right a { font-size: 10px !important; padding: 4px 10px !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="site-nav" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; border-bottom: 1px solid var(--gray-mid); position: sticky; top: 0; background: var(--white); z-index: 100;">
+    <div class="nav-left" style="display: flex; gap: 10px;">
+      <a href="shop.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid rgba(180,40,40,0.25); border-radius: 999px; padding: 5px 14px; background: rgba(180,40,40,0.08);">Shop</a>
+      <a href="about.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Our Story</a>
+      <a href="contact.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Contact</a>
+    </div>
+    <div style="font-size: 23px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500; color: var(--dark);">Cetemps</div>
+    <div class="nav-right" style="display: flex; gap: 10px;">
+      <a href="#" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Account</a>
+      <a href="#" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Cart (0)</a>
+    </div>
+  </nav>
+
+  <!-- Product Layout -->
+  <div class="product-layout" style="display: flex; align-items: flex-start; min-height: calc(100vh - 57px);">
+
+    <!-- Left: Sticky Image -->
+    <div class="product-image-col" style="width: 55%; position: sticky; top: 57px; height: calc(100vh - 57px); background: var(--gray-bg); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;">
+      <img src="CoatedLemon_ProductPhoto_Comb-1172.jpg.webp" alt="Cetemps Boar Hair Toothbrush" style="width: 55%; max-width: 320px; object-fit: contain;">
+    </div>
+
+    <!-- Right: Scrollable Details -->
+    <div class="product-detail-col" style="width: 45%; padding: 56px 52px; overflow-y: auto;">
+
+      <!-- Breadcrumb -->
+      <p style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--silver); margin-bottom: 24px;">
+        <a href="shop.html" style="color: var(--silver); text-decoration: none;">Shop</a> &nbsp;/&nbsp; Toothbrush
+      </p>
+
+      <!-- Rating -->
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+        <div style="display: flex; gap: 2px;">
+          <span style="color: var(--dark); font-size: 14px;">★★★★★</span>
+        </div>
+        <span style="font-size: 10px; letter-spacing: 0.1em; color: var(--silver); text-transform: uppercase;">(Rated 4.8 / 5)</span>
+      </div>
+
+      <!-- Title + Subtitle -->
+      <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1; color: var(--dark); margin-bottom: 8px;">Boar Hair<br>Toothbrush</h1>
+      <p style="font-size: 10px; letter-spacing: 0.12em; color: var(--silver); text-transform: uppercase; margin-bottom: 24px;">Hand-Set Bristles · BPA-Free Handle</p>
+
+      <!-- Tags -->
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;">
+        <span style="font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 4px 12px; color: var(--dark); background: var(--gray-bg);">Boar Bristle</span>
+        <span style="font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 4px 12px; color: var(--dark); background: var(--gray-bg);">Antimicrobial</span>
+        <span style="font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 4px 12px; color: var(--dark); background: var(--gray-bg);">Biodegradable</span>
+        <span style="font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 4px 12px; color: var(--dark); background: var(--gray-bg);">Plastic-Free</span>
+      </div>
+
+      <!-- Description -->
+      <p style="font-size: 12px; color: var(--silver); line-height: 1.85; letter-spacing: 0.03em; font-weight: 300; margin-bottom: 32px;">
+        Hand-set boar bristles are nature's most effective cleaning tool — naturally antimicrobial, gently abrasive, and tapered to clean between teeth without irritating gums. Paired with a BPA-free polycarbonate handle engineered for grip and longevity, each brush distributes toothpaste evenly across the surface for a deeper, more thorough clean than any synthetic bristle can match.
+      </p>
+
+      <!-- Plan Selector -->
+      <div style="margin-bottom: 24px;">
+        <div id="plan-sub" class="plan-option selected" onclick="selectPlan('sub')" style="margin-bottom: 8px; border-radius: 2px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="radio"></div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                  <span style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;">Subscribe &amp; Save</span>
+                  <span style="font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--dark); color: white; border-radius: 999px; padding: 2px 8px;">Best Value</span>
+                </div>
+                <p style="font-size: 10px; color: var(--silver); letter-spacing: 0.05em;">Delivered every 90 days · cancel anytime</p>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$23<span style="font-size: 12px; color: var(--silver);">.40</span></div>
+              <div style="font-size: 10px; text-decoration: line-through; color: var(--silver);">$26.00</div>
+            </div>
+          </div>
+          <!-- Benefits -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--gray-mid);">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 12px;">✓</span>
+              <span style="font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--silver);">10% off every order</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 12px;">✓</span>
+              <span style="font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--silver);">Skip, pause, or cancel</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 12px;">✓</span>
+              <span style="font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--silver);">Early access to drops</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 12px;">✓</span>
+              <span style="font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--silver);">Free shipping always</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="plan-once" class="plan-option" onclick="selectPlan('once')" style="border-radius: 2px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="radio"></div>
+              <div>
+                <span style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;">Buy Once</span>
+              </div>
+            </div>
+            <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$26<span style="font-size: 12px; color: var(--silver);">.00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Qty + CTA -->
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 32px;">
+        <div style="display: flex; align-items: center; border: 1px solid var(--gray-mid);">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <span id="qty" style="width: 48px; text-align: center; font-size: 14px; font-weight: 500;">1</span>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+        <button class="btn-shop" style="flex: 1;" id="cta-btn">Subscribe &amp; Save — $23.40 →</button>
+      </div>
+
+      <!-- Accordion -->
+      <div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>Free US Shipping</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="accordion-body">
+            <p>Free standard shipping on all US orders over $30. Subscriptions always ship free, every refill.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>Materials &amp; Sourcing</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="accordion-body">
+            <p>Handle: BPA-free polycarbonate, engineered for durability and precision grip. Bristles: 100% natural boar hair, hand-set and trimmed. No nylon bristles. Ships in recycled kraft packaging.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>Care Instructions</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="accordion-body">
+            <p>Rinse thoroughly after each use and allow to air dry in an upright position. Replace every 2–3 months, or when bristles begin to splay. The BPA-free polycarbonate handle is water-resistant and built for daily use.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>Returns &amp; Guarantee</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="accordion-body">
+            <p>If you're not satisfied after 30 days, we'll refund your first order — no questions asked. Opened products are eligible for our satisfaction guarantee.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Also available -->
+      <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--gray-mid);">
+        <p style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--silver); margin-bottom: 16px;">Complete The Ritual</p>
+        <a href="toothpaste.html" style="display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--dark);">
+          <div style="width: 72px; height: 72px; background: var(--gray-bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <img src="005ba1ac3c776b30989afda2c2811a78.jpg" alt="Toothpaste" style="height: 52px; object-fit: contain;">
+          </div>
+          <div style="flex: 1;">
+            <p style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 2px;">Fluoride-Free Toothpaste</p>
+            <p style="font-size: 11px; color: var(--silver);">$19.00</p>
+          </div>
+          <span style="font-size: 18px; color: var(--silver);">→</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: var(--dark); padding: 40px; border-top: 1px solid rgba(255,255,255,0.08);">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <span style="font-size: 20px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500; color: rgba(255,255,255,0.9);">Cetemps</span>
+      <p style="font-size: 9px; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); text-transform: uppercase;">© 2025 Cetemps. All rights reserved.</p>
+      <div style="display: flex; gap: 16px;">
+        <a href="#" style="font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-decoration: none;">Privacy</a>
+        <a href="#" style="font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-decoration: none;">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let qty = 1;
+    let currentPlan = 'sub';
+
+    function changeQty(delta) {
+      qty = Math.max(1, qty + delta);
+      document.getElementById('qty').textContent = qty;
+    }
+
+    function selectPlan(plan) {
+      currentPlan = plan;
+      document.querySelectorAll('.plan-option').forEach(el => el.classList.remove('selected'));
+      document.getElementById('plan-' + plan).classList.add('selected');
+      const btn = document.getElementById('cta-btn');
+      if (plan === 'sub') {
+        btn.textContent = 'Subscribe & Save — $23.40 →';
+      } else {
+        btn.textContent = 'Add to Cart — $26.00 →';
+      }
+    }
+
+    function toggleAccordion(header) {
+      const body = header.nextElementSibling;
+      const icon = header.querySelector('.icon');
+      const isOpen = body.classList.contains('open');
+      document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+      document.querySelectorAll('.accordion-header .icon').forEach(i => { i.textContent = '+'; i.style.transform = ''; });
+      if (!isOpen) {
+        body.classList.add('open');
+        icon.textContent = '−';
+      }
+    }
+  </script>
+</body>
+</html>
