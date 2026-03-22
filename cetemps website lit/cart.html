@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Cetemps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    html { overflow-x: hidden; }
+
+    :root {
+      --black: #000000;
+      --dark: #33322F;
+      --silver: #9C9B93;
+      --silver-light: #c8c7bf;
+      --gray-bg: #f7f7f6;
+      --gray-mid: #ebebea;
+      --white: #ffffff;
+      --shipping-red: #7A1A1A;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      background: var(--white);
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    .serif { font-family: 'Cormorant Garamond', serif; }
+
+    /* ── Qty stepper ── */
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--gray-mid);
+    }
+
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.18s;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .qty-btn:hover { background: var(--gray-bg); }
+
+    .qty-val {
+      width: 36px;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      border-left: 1px solid var(--gray-mid);
+      border-right: 1px solid var(--gray-mid);
+      height: 32px;
+      line-height: 32px;
+      font-weight: 500;
+    }
+
+    /* ── Free shipping bar ── */
+    .shipping-track {
+      width: 100%;
+      height: 3px;
+      background: var(--gray-mid);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 10px 0 6px;
+    }
+
+    .shipping-fill {
+      height: 100%;
+      background: var(--shipping-red);
+      border-radius: 2px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Cart item row ── */
+    .cart-item {
+      display: grid;
+      grid-template-columns: 88px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--gray-mid);
+    }
+
+    .cart-item img {
+      width: 88px;
+      height: 88px;
+      object-fit: contain;
+      background: var(--gray-bg);
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--silver-light);
+      font-size: 18px;
+      padding: 4px;
+      line-height: 1;
+      transition: color 0.2s;
+      align-self: flex-start;
+    }
+
+    .remove-btn:hover { color: var(--dark); }
+
+    /* ── Checkout button ── */
+    .btn-checkout {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: var(--dark);
+      color: #fff;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 16px 24px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      margin-top: 16px;
+    }
+
+    .btn-checkout:hover { opacity: 0.88; }
+
+    /* ── Empty state ── */
+    #empty-state { display: none; }
+
+    /* ── Confetti ── */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .cart-layout { flex-direction: column !important; padding: 24px 20px 60px !important; }
+      .cart-sidebar {
+        width: 100% !important;
+        border-left: none !important;
+        border-top: 1px solid var(--gray-mid);
+        padding-left: 0 !important;
+        padding-top: 32px !important;
+      }
+      /* Cart main column - remove right padding on mobile */
+      .cart-layout > div:first-child { padding-right: 0 !important; }
+
+      .cart-item {
+        grid-template-columns: 72px 1fr auto;
+        gap: 14px;
+        padding: 18px 0;
+      }
+      .cart-item img { width: 72px; height: 72px; }
+
+      /* Page header */
+      div[style*="padding: 48px 40px 0"] {
+        padding: 32px 20px 0 !important;
+        text-align: center !important;
+      }
+
+      /* Center heading and label */
+      h1 { text-align: center !important; }
+      p[style*="YOUR SELECTION"],
+      p[style*="Your Selection"] { text-align: center !important; }
+
+      /* Sidebar summary center on mobile */
+      .cart-sidebar > div { text-align: center; }
+      .cart-sidebar .shipping-track { text-align: left; }
+      .cart-sidebar div[style*="justify-content: space-between"] { text-align: left; }
+
+      nav { padding: 12px 20px !important; }
+      .nav-left { display: none !important; }
+      .nav-right a:first-child { display: none !important; }
+    }
+  
+      /* Nav overflow clamp */
+      nav, .site-nav, .nav-wrap {
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+      }
+      * { box-sizing: border-box; }
+    
+  
+      /* ── Mobile button sizing fix ── */ /* btn-shop-mobile-fix */
+      @media (max-width: 768px) {
+        .btn-shop {
+          padding: 10px 18px !important;
+          font-size: 9px !important;
+          letter-spacing: 0.13em !important;
+        }
+        .btn-checkout {
+          padding: 13px 18px !important;
+          font-size: 9px !important;
+          letter-spacing: 0.15em !important;
+        }
+      }
+    
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav-wrap" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; border-bottom: 1px solid var(--gray-mid);">
+    <div class="nav-left" style="display: flex; gap: 10px;">
+      <a href="shop.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid rgba(180,40,40,0.25); border-radius: 999px; padding: 5px 14px; background: rgba(180,40,40,0.08);">Shop</a>
+      <a href="about.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Our Story</a>
+      <a href="contact.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Contact</a>
+    </div>
+    <a href="index.html" style="font-size: 23px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500; color: var(--dark); text-decoration: none;">Cetemps</a>
+    <div class="nav-right" style="display: flex; gap: 10px;">
+      <a href="#" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Account</a>
+      <a id="cart-nav-link" href="cart.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Cart (0)</a>
+    </div>
+  </nav>
+
+  <!-- Page header -->
+  <div style="padding: 48px 40px 0; max-width: 1200px; margin: 0 auto;">
+    <p style="font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--silver); margin-bottom: 8px;">Your Selection</p>
+    <h1 class="serif" style="font-size: 48px; font-weight: 300; letter-spacing: 0.04em; color: var(--dark); line-height: 1;">Your Cart</h1>
+  </div>
+
+  <!-- Cart body -->
+  <div class="cart-layout" style="display: flex; gap: 0; max-width: 1200px; margin: 0 auto; padding: 40px 40px 80px;">
+
+    <!-- Items column -->
+    <div style="flex: 1; min-width: 0; padding-right: 64px;">
+
+      <!-- Empty state -->
+      <div id="empty-state" style="padding: 80px 0; text-align: center;">
+        <p class="serif" style="font-size: 28px; font-weight: 300; color: var(--silver); margin-bottom: 20px;">Your cart is empty</p>
+        <a href="shop.html" style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dark); border: 1px solid var(--dark); padding: 13px 28px; text-decoration: none; font-weight: 500;">Explore Products &rarr;</a>
+      </div>
+
+      <!-- Items list -->
+      <div id="cart-items-list" style="border-top: 1px solid var(--gray-mid);"></div>
+
+    </div>
+
+    <!-- Sidebar summary -->
+    <div class="cart-sidebar" style="width: 340px; flex-shrink: 0; border-left: 1px solid var(--gray-mid); padding-left: 48px;">
+
+      <!-- Free shipping progress -->
+      <div style="margin-bottom: 32px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+          <p id="shipping-label" style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--shipping-red); font-weight: 500;"></p>
+          <p id="shipping-threshold" style="font-size: 10px; letter-spacing: 0.1em; color: var(--silver-light); text-transform: uppercase;">Free at $40</p>
+        </div>
+        <div class="shipping-track">
+          <div id="shipping-fill" class="shipping-fill" style="width: 0%;"></div>
+        </div>
+        <p id="shipping-sub" style="font-size: 10px; color: var(--silver); letter-spacing: 0.06em;"></p>
+      </div>
+
+      <!-- Order summary -->
+      <div style="border-top: 1px solid var(--gray-mid); padding-top: 24px;">
+        <p style="font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; margin-bottom: 20px;">Order Summary</p>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+          <span style="font-size: 12px; color: var(--silver); letter-spacing: 0.08em;">Subtotal</span>
+          <span id="summary-subtotal" style="font-size: 12px; letter-spacing: 0.06em;">$0.00</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+          <span style="font-size: 12px; color: var(--silver); letter-spacing: 0.08em;">Shipping</span>
+          <span id="summary-shipping" style="font-size: 12px; letter-spacing: 0.06em; color: var(--silver);">Calculated at checkout</span>
+        </div>
+
+        <div style="border-top: 1px solid var(--gray-mid); padding-top: 16px; margin-top: 8px; display: flex; justify-content: space-between; align-items: baseline;">
+          <span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;">Total</span>
+          <span id="summary-total" style="font-size: 22px; font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 0.04em;">$0.00</span>
+        </div>
+
+        <a href="#" class="btn-checkout">Proceed to Checkout &rarr;</a>
+
+        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 14px; color: var(--silver-light);">&#10003;</span>
+            <span style="font-size: 10px; color: var(--silver); letter-spacing: 0.1em; text-transform: uppercase;">Secure checkout</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 14px; color: var(--silver-light);">&#10003;</span>
+            <span style="font-size: 10px; color: var(--silver); letter-spacing: 0.1em; text-transform: uppercase;">30-day returns</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 14px; color: var(--silver-light);">&#10003;</span>
+            <span style="font-size: 10px; color: var(--silver); letter-spacing: 0.1em; text-transform: uppercase;">Free shipping over $40</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Footer -->
+  <footer style="border-top: 1px solid var(--gray-mid); padding: 24px 40px; text-align: center;">
+    <p style="font-size: 10px; color: var(--silver-light); letter-spacing: 0.14em; text-transform: uppercase;">&copy; 2026 Cetemps. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const FREE_SHIPPING_THRESHOLD = 40;
+
+    function getCart() { return JSON.parse(localStorage.getItem('cetemps_cart') || '[]'); }
+    function saveCart(items) { localStorage.setItem('cetemps_cart', JSON.stringify(items)); renderCart(); }
+    function getCartTotal() { return getCart().reduce((s, i) => s + i.price * i.qty, 0); }
+    function getCartCount() { return getCart().reduce((s, i) => s + i.qty, 0); }
+
+    function updateNavCount() {
+      const el = document.getElementById('cart-nav-link');
+      if (el) el.textContent = 'Cart (' + getCartCount() + ')';
+    }
+
+    function updateQty(id, delta) {
+      const cart = getCart();
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty = Math.max(0, item.qty + delta);
+      if (item.qty === 0) cart.splice(cart.indexOf(item), 1);
+      saveCart(cart);
+    }
+
+    function removeItem(id) {
+      saveCart(getCart().filter(i => i.id !== id));
+    }
+
+    function updateShippingBar(total) {
+      const pct = Math.min(100, (total / FREE_SHIPPING_THRESHOLD) * 100);
+      document.getElementById('shipping-fill').style.width = pct + '%';
+
+      const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
+      const label = document.getElementById('shipping-label');
+      const sub = document.getElementById('shipping-sub');
+
+      if (remaining <= 0) {
+        label.textContent = 'You qualify for free shipping!';
+        label.style.color = '#2E6B3A';
+        sub.textContent = '';
+        document.getElementById('summary-shipping').textContent = 'Free';
+        document.getElementById('summary-shipping').style.color = '#2E6B3A';
+        document.getElementById('shipping-fill').style.background = '#2E6B3A';
+      } else {
+        label.textContent = '$' + remaining.toFixed(2) + ' away from free shipping';
+        label.style.color = 'var(--shipping-red)';
+        sub.textContent = '';
+        document.getElementById('summary-shipping').textContent = 'Calculated at checkout';
+        document.getElementById('summary-shipping').style.color = 'var(--silver)';
+        document.getElementById('shipping-fill').style.background = 'var(--shipping-red)';
+      }
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const total = getCartTotal();
+      const list = document.getElementById('cart-items-list');
+      const empty = document.getElementById('empty-state');
+
+      updateNavCount();
+
+      if (cart.length === 0) {
+        list.innerHTML = '';
+        empty.style.display = 'block';
+        document.querySelector('.cart-sidebar').style.opacity = '0.4';
+        document.querySelector('.cart-sidebar').style.pointerEvents = 'none';
+        updateShippingBar(0);
+        document.getElementById('summary-subtotal').textContent = '$0.00';
+        document.getElementById('summary-total').textContent = '$0.00';
+        return;
+      }
+
+      empty.style.display = 'none';
+      document.querySelector('.cart-sidebar').style.opacity = '1';
+      document.querySelector('.cart-sidebar').style.pointerEvents = 'auto';
+
+      list.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <img src="${item.img}" alt="${item.name}">
+          <div>
+            <p style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500; margin-bottom: 4px;">${item.name}</p>
+            <p style="font-size: 13px; color: var(--silver); margin-bottom: 14px; letter-spacing: 0.04em;">$${item.price.toFixed(2)}</p>
+            <div class="qty-stepper">
+              <button class="qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
+              <span class="qty-val">${item.qty}</span>
+              <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <button class="remove-btn" onclick="removeItem('${item.id}')" title="Remove">&#10005;</button>
+            <p style="font-size: 13px; font-weight: 500; letter-spacing: 0.04em; margin-top: auto;">$${(item.price * item.qty).toFixed(2)}</p>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('summary-subtotal').textContent = '$' + total.toFixed(2);
+      document.getElementById('summary-total').textContent = '$' + total.toFixed(2);
+      updateShippingBar(total);
+    }
+
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ['#000000', '#33322F', '#9C9B93', '#c8c7bf', '#ffffff'];
+      const particles = Array.from({ length: 120 }, () => ({
+        x: Math.random() * canvas.width, y: -10 - Math.random() * 200,
+        w: 6 + Math.random() * 8, h: 3 + Math.random() * 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 3, vy: 2 + Math.random() * 4,
+        angle: Math.random() * Math.PI * 2, spin: (Math.random() - 0.5) * 0.18,
+      }));
+      const start = performance.now(), duration = 3000;
+      function draw(now) {
+        const elapsed = now - start;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const fade = Math.max(0, 1 - Math.max(0, elapsed - 2000) / 1000);
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.angle += p.spin; p.vy += 0.06;
+          ctx.save(); ctx.globalAlpha = fade;
+          ctx.translate(p.x, p.y); ctx.rotate(p.angle);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        if (elapsed < duration) requestAnimationFrame(draw);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCart();
+      // Fire confetti if cart has items (user just added something)
+      if (getCart().length > 0) {
+        setTimeout(launchConfetti, 200);
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Cetemps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    html { overflow-x: hidden; }
+
+    :root {
+      --black: #000000;
+      --dark: #33322F;
+      --silver: #9C9B93;
+      --silver-light: #c8c7bf;
+      --gray-bg: #f7f7f6;
+      --gray-mid: #ebebea;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--white);
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Form inputs */
+    .form-field {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid var(--gray-mid);
+      padding: 14px 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      color: var(--dark);
+      background: transparent;
+      outline: none;
+      transition: border-color 0.3s ease;
+      resize: none;
+    }
+    .form-field::placeholder {
+      color: var(--silver);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+    }
+    .form-field:focus {
+      border-bottom-color: var(--dark);
+    }
+    .form-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--silver);
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 400;
+    }
+
+    /* Submit button */
+    .btn-submit {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--dark); font-size: 10px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 16px 48px; color: var(--dark);
+      font-weight: 500; position: relative; overflow: hidden; z-index: 0;
+      transition: color 0.45s ease; cursor: pointer;
+      background: none; font-family: 'Montserrat', sans-serif;
+    }
+    .btn-submit::before {
+      content: ''; position: absolute; inset: 0; z-index: -1;
+      background: var(--dark); transform: translateX(-100%);
+      transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+    }
+    .btn-submit:hover::before { transform: translateX(0); }
+    .btn-submit:hover { color: #fff; }
+
+    /* Select */
+    select.form-field {
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .site-nav { padding: 12px 16px !important; }
+      .nav-left, .nav-right { gap: 6px !important; }
+      .nav-left { display: none !important; }
+      .nav-right a:first-child { display: none !important; }
+      .contact-layout { flex-direction: column !important; }
+      .contact-info-col { width: 100% !important; padding: 48px 24px !important; border-right: none !important; border-bottom: 1px solid var(--gray-mid) !important; }
+      .contact-form-col { width: 100% !important; padding: 48px 24px !important; }
+      .form-row { flex-direction: column !important; gap: 32px !important; }
+      .hero-contact h1 { font-size: 40px !important; }
+    }
+  
+      /* Nav overflow clamp */
+      nav, .site-nav, .nav-wrap {
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+      }
+      * { box-sizing: border-box; }
+    
+  
+      /* ── Mobile button sizing fix ── */ /* btn-shop-mobile-fix */
+      @media (max-width: 768px) {
+        .btn-shop {
+          padding: 10px 18px !important;
+          font-size: 9px !important;
+          letter-spacing: 0.13em !important;
+        }
+        .btn-checkout {
+          padding: 13px 18px !important;
+          font-size: 9px !important;
+          letter-spacing: 0.15em !important;
+        }
+      }
+    
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="site-nav" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; border-bottom: 1px solid var(--gray-mid); position: sticky; top: 0; background: var(--white); z-index: 100;">
+    <div class="nav-left" style="display: flex; gap: 10px;">
+      <a href="shop.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid rgba(180,40,40,0.25); border-radius: 999px; padding: 5px 14px; background: rgba(180,40,40,0.08);">Shop</a>
+      <a href="about.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Our Story</a>
+      <a href="contact.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--dark); border-radius: 999px; padding: 5px 14px; background: var(--dark); color: white;">Contact</a>
+    </div>
+    <a href="index.html" style="font-size: 23px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500; color: var(--dark); text-decoration: none;">Cetemps</a>
+    <div class="nav-right" style="display: flex; gap: 10px;">
+      <a href="#" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Account</a>
+      <a href="#" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Cart (0)</a>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="hero-contact" style="padding: 80px 40px 64px; border-bottom: 1px solid var(--gray-mid);">
+    <span style="font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--silver); display: block; margin-bottom: 20px;">Get in Touch</span>
+    <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300; text-transform: uppercase; letter-spacing: 0.06em; line-height: 0.9; color: var(--dark);">We'd Love<br><em style="font-style: italic;">to Hear From You</em></h1>
+  </div>
+
+  <!-- Contact Layout -->
+  <div class="contact-layout" style="display: flex; min-height: 70vh;">
+
+    <!-- Left: Info -->
+    <div class="contact-info-col" style="width: 36%; padding: 64px 56px; border-right: 1px solid var(--gray-mid); display: flex; flex-direction: column; justify-content: space-between; background: var(--gray-bg);">
+
+      <div style="display: flex; flex-direction: column; gap: 48px;">
+
+        <div>
+          <p style="font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver); margin-bottom: 12px;">General Enquiries</p>
+          <p style="font-size: 13px; color: var(--dark); letter-spacing: 0.04em; font-weight: 400;">hello@cetemps.com</p>
+        </div>
+
+        <div>
+          <p style="font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver); margin-bottom: 12px;">Orders &amp; Returns</p>
+          <p style="font-size: 13px; color: var(--dark); letter-spacing: 0.04em; font-weight: 400;">orders@cetemps.com</p>
+        </div>
+
+        <div>
+          <p style="font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver); margin-bottom: 12px;">Press &amp; Partnerships</p>
+          <p style="font-size: 13px; color: var(--dark); letter-spacing: 0.04em; font-weight: 400;">press@cetemps.com</p>
+        </div>
+
+        <div>
+          <p style="font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver); margin-bottom: 12px;">Response Time</p>
+          <p style="font-size: 13px; color: var(--dark); letter-spacing: 0.04em; font-weight: 300; line-height: 1.7;">We respond to every message within 24 hours, Monday through Friday.</p>
+        </div>
+
+      </div>
+
+      <!-- Pull quote -->
+      <div style="padding-top: 48px; border-top: 1px solid var(--gray-mid); margin-top: 48px;">
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; font-weight: 300; color: var(--dark); line-height: 1.5; margin-bottom: 14px;">"Every ingredient is traceable. Every question deserves an answer."</p>
+        <p style="font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--silver);">The Cetemps Standard</p>
+      </div>
+
+    </div>
+
+    <!-- Right: Form -->
+    <div class="contact-form-col" style="width: 64%; padding: 64px 72px; display: flex; flex-direction: column; justify-content: center;">
+
+      <form onsubmit="handleSubmit(event)" style="display: flex; flex-direction: column; gap: 40px; max-width: 580px;">
+
+        <!-- Name + Email row -->
+        <div class="form-row" style="display: flex; gap: 40px;">
+          <div style="flex: 1;">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-field" placeholder="Your name" required>
+          </div>
+          <div style="flex: 1;">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-field" placeholder="your@email.com" required>
+          </div>
+        </div>
+
+        <!-- Subject -->
+        <div>
+          <label class="form-label">Subject</label>
+          <div style="position: relative;">
+            <select class="form-field" style="padding-right: 24px;" required>
+              <option value="" disabled selected style="color: var(--silver);">Select a topic</option>
+              <option value="order">Order or Shipping</option>
+              <option value="returns">Returns or Exchange</option>
+              <option value="product">Product Question</option>
+              <option value="subscription">Subscription</option>
+              <option value="wholesale">Wholesale or Partnership</option>
+              <option value="press">Press Enquiry</option>
+              <option value="other">Other</option>
+            </select>
+            <span style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--silver); pointer-events: none;">↓</span>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div>
+          <label class="form-label">Message</label>
+          <textarea class="form-field" rows="6" placeholder="Tell us what's on your mind…" required></textarea>
+        </div>
+
+        <!-- Submit -->
+        <div>
+          <button type="submit" class="btn-submit">Send Message &rarr;</button>
+        </div>
+
+      </form>
+
+      <!-- Success state (hidden by default) -->
+      <div id="success-msg" style="display: none; max-width: 580px; padding: 48px 0;">
+        <div style="width: 40px; height: 1px; background: var(--dark); margin-bottom: 32px;"></div>
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dark); margin-bottom: 16px;">Message Sent</h3>
+        <p style="font-size: 12px; color: var(--silver); line-height: 1.8; letter-spacing: 0.04em; font-weight: 300;">Thank you for reaching out. We'll be in touch within 24 hours.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ strip -->
+  <section style="border-top: 1px solid var(--gray-mid); padding: 80px 40px; background: var(--white);">
+    <div style="max-width: 900px; margin: 0 auto;">
+      <div style="text-align: center; margin-bottom: 56px;">
+        <span style="font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver);">Quick Answers</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0;">
+
+        <div style="padding: 32px 40px 32px 0; border-bottom: 1px solid var(--gray-mid); border-right: 1px solid var(--gray-mid);">
+          <p style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 10px;">Where do you ship?</p>
+          <p style="font-size: 11px; color: var(--silver); line-height: 1.8; font-weight: 300;">We currently ship across the United States, with free standard shipping on all orders over $30.</p>
+        </div>
+
+        <div style="padding: 32px 0 32px 40px; border-bottom: 1px solid var(--gray-mid);">
+          <p style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 10px;">How do I cancel my subscription?</p>
+          <p style="font-size: 11px; color: var(--silver); line-height: 1.8; font-weight: 300;">Log into your account and manage or cancel your subscription at any time — no fees, no friction.</p>
+        </div>
+
+        <div style="padding: 32px 40px 0 0; border-right: 1px solid var(--gray-mid);">
+          <p style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 10px;">Are your products truly fluoride-free?</p>
+          <p style="font-size: 11px; color: var(--silver); line-height: 1.8; font-weight: 300;">Yes. No fluoride, SLS, artificial sweeteners, or synthetic preservatives. Every ingredient is listed in full.</p>
+        </div>
+
+        <div style="padding: 32px 0 0 40px;">
+          <p style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 10px;">What is your return policy?</p>
+          <p style="font-size: 11px; color: var(--silver); line-height: 1.8; font-weight: 300;">Not satisfied after 30 days? We'll refund your first order, no questions asked. Reach out and we'll take care of it.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background: var(--dark); padding: 40px; border-top: 1px solid rgba(255,255,255,0.08);">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <span style="font-size: 20px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500; color: rgba(255,255,255,0.9);">Cetemps</span>
+      <p style="font-size: 9px; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); text-transform: uppercase;">© 2025 Cetemps. All rights reserved.</p>
+      <div style="display: flex; gap: 16px;">
+        <a href="#" style="font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-decoration: none;">Privacy</a>
+        <a href="#" style="font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-decoration: none;">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.querySelector('form').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
