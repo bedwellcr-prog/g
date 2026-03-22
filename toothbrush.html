@@ -232,8 +232,8 @@
               </div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$23<span style="font-size: 12px; color: var(--silver);">.40</span></div>
-              <div style="font-size: 10px; text-decoration: line-through; color: var(--silver);">$26.00</div>
+              <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$23</div>
+              <div style="font-size: 10px; text-decoration: line-through; color: var(--silver);">$26</div>
             </div>
           </div>
           <!-- Benefits -->
@@ -265,7 +265,7 @@
                 <span style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;">Buy Once</span>
               </div>
             </div>
-            <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$26<span style="font-size: 12px; color: var(--silver);">.00</span></div>
+            <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$26</div>
           </div>
         </div>
       </div>
@@ -277,7 +277,7 @@
           <span id="qty" style="width: 48px; text-align: center; font-size: 14px; font-weight: 500;">1</span>
           <button class="qty-btn" onclick="changeQty(1)">+</button>
         </div>
-        <button class="btn-shop" style="flex: 1;" id="cta-btn" onclick="handleCTA()">Subscribe &amp; Save — $23.40 →</button>
+        <button class="btn-shop" style="flex: 1;" id="cta-btn" onclick="handleCTA()">Subscribe &amp; Save — $23 →</button>
       </div>
 
       <!-- Accordion -->
@@ -329,7 +329,7 @@
           </div>
           <div style="flex: 1;">
             <p style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 2px;">Fluoride-Free Toothpaste</p>
-            <p style="font-size: 11px; color: var(--silver);">$19.00</p>
+            <p style="font-size: 11px; color: var(--silver);">$19</p>
           </div>
           <span style="font-size: 18px; color: var(--silver);">→</span>
         </a>
@@ -388,7 +388,7 @@
 
     function handleCTA() {
       if (currentPlan === 'sub') {
-        doAddToCart('toothbrush-sub', 'Toothbrush · Subscribe & Save', 23.40, 'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp');
+        doAddToCart('toothbrush-sub', 'Toothbrush · Subscribe & Save', 23, 'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp');
       } else {
         doAddToCart('toothbrush', 'Boar Hair Toothbrush', 26, 'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp');
       }
@@ -463,7 +463,7 @@
       document.querySelectorAll('.plan-option').forEach(el => el.classList.remove('selected'));
       document.getElementById('plan-' + plan).classList.add('selected');
       const btn = document.getElementById('cta-btn');
-      btn.textContent = plan === 'sub' ? 'Subscribe & Save — $23.40 →' : 'Add to Cart — $26.00 →';
+      btn.textContent = plan === 'sub' ? 'Subscribe & Save — $23 →' : 'Add to Cart — $26 →';
     }
 
     function toggleAccordion(header) {

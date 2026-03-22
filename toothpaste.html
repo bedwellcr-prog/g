@@ -232,8 +232,8 @@
               </div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$17<span style="font-size: 12px; color: var(--silver);">.10</span></div>
-              <div style="font-size: 10px; text-decoration: line-through; color: var(--silver);">$19.00</div>
+              <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$17</div>
+              <div style="font-size: 10px; text-decoration: line-through; color: var(--silver);">$19</div>
             </div>
           </div>
           <!-- Benefits -->
@@ -265,7 +265,7 @@
                 <span style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;">Buy Once</span>
               </div>
             </div>
-            <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$19<span style="font-size: 12px; color: var(--silver);">.00</span></div>
+            <div style="font-size: 18px; font-weight: 500; letter-spacing: 0.04em;">$19</div>
           </div>
         </div>
       </div>
@@ -277,7 +277,7 @@
           <span id="qty" style="width: 48px; text-align: center; font-size: 14px; font-weight: 500;">1</span>
           <button class="qty-btn" onclick="changeQty(1)">+</button>
         </div>
-        <button class="btn-shop" style="flex: 1;" id="cta-btn" onclick="handleCTA()">Subscribe &amp; Save — $17.10 →</button>
+        <button class="btn-shop" style="flex: 1;" id="cta-btn" onclick="handleCTA()">Subscribe &amp; Save — $17 →</button>
       </div>
 
       <!-- Accordion -->
@@ -390,7 +390,7 @@
     // ── CTA handler ──
     function handleCTA() {
       if (currentPlan === 'sub') {
-        doAddToCart('toothpaste-sub', 'Toothpaste · Subscribe & Save', 17.10, '005ba1ac3c776b30989afda2c2811a78.jpg');
+        doAddToCart('toothpaste-sub', 'Toothpaste · Subscribe & Save', 17, '005ba1ac3c776b30989afda2c2811a78.jpg');
       } else {
         doAddToCart('toothpaste', 'Cetemps Toothpaste', 19, '005ba1ac3c776b30989afda2c2811a78.jpg');
       }
@@ -466,7 +466,7 @@
       document.querySelectorAll('.plan-option').forEach(el => el.classList.remove('selected'));
       document.getElementById('plan-' + plan).classList.add('selected');
       const btn = document.getElementById('cta-btn');
-      btn.textContent = plan === 'sub' ? 'Subscribe & Save — $17.10 →' : 'Add to Cart — $19.00 →';
+      btn.textContent = plan === 'sub' ? 'Subscribe & Save — $17 →' : 'Add to Cart — $19 →';
     }
 
     function toggleAccordion(header) {
