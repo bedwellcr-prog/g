@@ -65,6 +65,60 @@
         }
       }
     
+  
+    /* ── Hamburger & Mobile Menu ── */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: 1px solid var(--gray-mid);
+      border-radius: 999px;
+      cursor: pointer;
+      padding: 6px 10px;
+      width: 40px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+    .hamburger-btn span {
+      width: 18px;
+      height: 1.5px;
+      background: var(--dark);
+      display: block;
+      transition: transform 0.22s ease, opacity 0.22s ease;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-mid);
+      z-index: 997;
+      flex-direction: column;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--gray-mid);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    @media (max-width: 768px) {
+      .hamburger-btn { display: flex !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -76,12 +130,19 @@
       <a href="about.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--dark); border-radius: 999px; padding: 5px 14px; background: var(--dark); color: white;">Our Story</a>
       <a href="contact.html" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Contact</a>
     </div>
+    <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Open menu"><span></span><span></span><span></span></button>
     <a href="index.html" style="font-size: 23px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500; color: var(--dark); text-decoration: none;">Cetemps</a>
     <div class="nav-right" style="display: flex; gap: 10px;">
       <a href="#" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Account</a>
       <a href="#" style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dark); text-decoration: none; border: 1px solid var(--gray-mid); border-radius: 999px; padding: 5px 14px; background: var(--gray-bg);">Cart (0)</a>
     </div>
   </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="shop.html">Shop</a>
+    <a href="about.html">Our Story</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
 
   <!-- Hero -->
   <section style="position: relative; width: 100%; height: 92vh; overflow: hidden; background: #1c1b18;">
@@ -283,6 +344,26 @@
       </div>
     </div>
   </footer>
+
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const btn = document.getElementById('hamburger-btn');
+      const nav = document.querySelector('.site-nav');
+      if (nav && menu) menu.style.top = nav.getBoundingClientRect().bottom + 'px';
+      menu.classList.toggle('open');
+      btn.classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('mobile-menu');
+      const btn = document.getElementById('hamburger-btn');
+      if (menu && btn && menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove('open');
+        btn.classList.remove('open');
+      }
+    });
+  </script>
 
 </body>
 </html>
