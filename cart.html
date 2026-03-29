@@ -196,6 +196,85 @@
 
     .btn-checkout:hover { opacity: 0.88; }
 
+    /* ── Upsell card ── */
+    .upsell-block {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--gray-mid);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .upsell-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .upsell-label {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--silver-light);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .upsell-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .upsell-img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      background: var(--gray-bg);
+      flex-shrink: 0;
+    }
+
+    .upsell-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .upsell-name {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .upsell-price {
+      font-size: 13px;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      color: var(--silver);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .upsell-add {
+      flex-shrink: 0;
+      border: 1px solid var(--dark);
+      background: transparent;
+      color: var(--dark);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    .upsell-add:hover { background: var(--dark); color: #fff; }
+
     /* ── Empty state ── */
     #empty-state { display: none; }
 
@@ -426,6 +505,20 @@
             <span style="font-size: 10px; color: var(--silver); letter-spacing: 0.1em; text-transform: uppercase;">Free shipping over $40</span>
           </div>
         </div>
+
+        <!-- Contextual upsell -->
+        <div id="upsell-block" class="upsell-block">
+          <span class="upsell-label">Complete the ritual</span>
+          <div class="upsell-row">
+            <img id="upsell-img" class="upsell-img" src="" alt="">
+            <div class="upsell-info">
+              <span id="upsell-name" class="upsell-name"></span>
+              <span id="upsell-price" class="upsell-price"></span>
+            </div>
+            <button id="upsell-add" class="upsell-add" onclick="upsellAdd()">+ Add</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -544,6 +637,60 @@
       document.getElementById('summary-subtotal').textContent = '$' + total.toFixed(2);
       document.getElementById('summary-total').textContent = '$' + total.toFixed(2);
       updateShippingBar(total);
+      updateUpsell();
+    }
+
+    const UPSELL_PRODUCTS = {
+      toothpaste: { id: 'toothpaste', name: 'Cetemps Toothpaste', price: 19, img: '005ba1ac3c776b30989afda2c2811a78.jpg' },
+      toothbrush: { id: 'toothbrush', name: 'Boar Hair Toothbrush', price: 26, img: 'CoatedLemon_ProductPhoto_Comb-1172.jpg.webp' },
+      bundle:     { id: 'bundle',     name: 'The Ritual Bundle',   price: 38, img: '005ba1ac3c776b30989afda2c2811a78-2.jpg' }
+    };
+
+    let _upsellProduct = null;
+
+    function updateUpsell() {
+      const cart = getCart();
+      const ids = cart.map(i => i.id);
+      const hasPaste  = ids.some(id => id.startsWith('toothpaste'));
+      const hasBrush  = ids.some(id => id.startsWith('toothbrush'));
+      const hasBundle = ids.some(id => id.startsWith('bundle'));
+      const block = document.getElementById('upsell-block');
+
+      let pick = null;
+      if (hasBundle || (hasPaste && hasBrush)) {
+        // nothing meaningful to upsell
+      } else if (hasPaste && !hasBrush) {
+        pick = UPSELL_PRODUCTS.toothbrush;
+      } else if (hasBrush && !hasPaste) {
+        pick = UPSELL_PRODUCTS.toothpaste;
+      } else if (!hasPaste && !hasBrush && !hasBundle) {
+        pick = UPSELL_PRODUCTS.toothpaste; // empty cart — suggest entry product
+      }
+
+      if (!pick) { block.classList.remove('visible'); return; }
+
+      _upsellProduct = pick;
+      document.getElementById('upsell-img').src = pick.img;
+      document.getElementById('upsell-img').alt = pick.name;
+      document.getElementById('upsell-name').textContent = pick.name;
+      document.getElementById('upsell-price').textContent = '$' + pick.price;
+      setTimeout(() => block.classList.add('visible'), 100);
+    }
+
+    function upsellAdd() {
+      if (!_upsellProduct) return;
+      const p = _upsellProduct;
+      const cart = getCart();
+      const existing = cart.find(i => i.id === p.id);
+      if (existing) { existing.qty++; } else { cart.push({ id: p.id, name: p.name, price: p.price, img: p.img, qty: 1 }); }
+      saveCart(cart);
+      renderCart();
+      // briefly flash the button
+      const btn = document.getElementById('upsell-add');
+      btn.textContent = '✓ Added';
+      btn.style.background = 'var(--dark)';
+      btn.style.color = '#fff';
+      setTimeout(() => { btn.textContent = '+ Add'; btn.style.background = ''; btn.style.color = ''; }, 1400);
     }
 
     function launchConfetti() {
