@@ -72,6 +72,25 @@
     }
 
     /* ── Free shipping bar ── */
+    .shipping-wrap {
+      margin-bottom: 32px;
+      padding: 14px 16px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      transition: border-color 0.6s ease, box-shadow 0.6s ease, background 0.6s ease;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 0 1px rgba(46,107,58,0.2), 0 0 14px rgba(46,107,58,0.12); }
+      50%       { box-shadow: 0 0 0 1px rgba(46,107,58,0.45), 0 0 28px rgba(46,107,58,0.22); }
+    }
+
+    .shipping-wrap.unlocked {
+      border-color: rgba(46,107,58,0.35);
+      background: rgba(46,107,58,0.03);
+      animation: glow-pulse 2.8s ease-in-out infinite;
+    }
+
     .shipping-track {
       width: 100%;
       height: 3px;
@@ -85,7 +104,43 @@
       height: 100%;
       background: var(--shipping-red);
       border-radius: 2px;
-      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease;
+    }
+
+    @keyframes bar-shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+
+    .shipping-fill.unlocked {
+      background: linear-gradient(90deg, #2E6B3A 35%, #5aaa6a 50%, #2E6B3A 65%) !important;
+      background-size: 200% auto !important;
+      animation: bar-shimmer 2.2s linear infinite;
+    }
+
+    .shipping-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2E6B3A;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      margin-top: 6px;
+    }
+
+    .shipping-badge.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .shipping-badge::before {
+      content: '✦';
+      font-size: 8px;
     }
 
     /* ── Cart item row ── */
@@ -324,7 +379,7 @@
     <div class="cart-sidebar" style="width: 340px; flex-shrink: 0; border-left: 1px solid var(--gray-mid); padding-left: 48px;">
 
       <!-- Free shipping progress -->
-      <div style="margin-bottom: 32px;">
+      <div id="shipping-wrap" class="shipping-wrap">
         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
           <p id="shipping-label" style="font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--shipping-red); font-weight: 500;"></p>
           <p id="shipping-threshold" style="font-size: 10px; letter-spacing: 0.1em; color: var(--silver-light); text-transform: uppercase;">Free at $40</p>
@@ -333,6 +388,7 @@
           <div id="shipping-fill" class="shipping-fill" style="width: 0%;"></div>
         </div>
         <p id="shipping-sub" style="font-size: 10px; color: var(--silver); letter-spacing: 0.06em;"></p>
+        <div id="shipping-badge" class="shipping-badge">Free Shipping Unlocked</div>
       </div>
 
       <!-- Order summary -->
@@ -416,20 +472,30 @@
       const label = document.getElementById('shipping-label');
       const sub = document.getElementById('shipping-sub');
 
+      const wrap = document.getElementById('shipping-wrap');
+      const fill = document.getElementById('shipping-fill');
+      const badge = document.getElementById('shipping-badge');
+
       if (remaining <= 0) {
-        label.textContent = 'You qualify for free shipping!';
+        label.textContent = 'Free shipping unlocked';
         label.style.color = '#2E6B3A';
         sub.textContent = '';
         document.getElementById('summary-shipping').textContent = 'Free';
         document.getElementById('summary-shipping').style.color = '#2E6B3A';
-        document.getElementById('shipping-fill').style.background = '#2E6B3A';
+        fill.style.background = '';
+        fill.classList.add('unlocked');
+        wrap.classList.add('unlocked');
+        setTimeout(() => badge.classList.add('visible'), 300);
       } else {
         label.textContent = '$' + remaining.toFixed(2) + ' away from free shipping';
         label.style.color = 'var(--shipping-red)';
         sub.textContent = '';
         document.getElementById('summary-shipping').textContent = 'Calculated at checkout';
         document.getElementById('summary-shipping').style.color = 'var(--silver)';
-        document.getElementById('shipping-fill').style.background = 'var(--shipping-red)';
+        fill.style.background = '';
+        fill.classList.remove('unlocked');
+        wrap.classList.remove('unlocked');
+        badge.classList.remove('visible');
       }
     }
 
